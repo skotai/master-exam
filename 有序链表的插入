@@ -1,0 +1,39 @@
+typedef struct Node {
+	struct Node* next;
+	int val;
+}Node;
+
+Node* init(int val) {
+	Node* node = (Node*)malloc(sizeof(Node));
+	node->next = NULL;
+	node->val = val;
+	return node;
+}
+
+//有序链表插入
+Node* merge(Node* node1, Node* node2) {
+	if (node1 == NULL) return node2;
+	if (node2 == NULL) return node1;
+	Node* newNode = init(-1);
+	Node* cur1 = node1;
+	Node* cur2 = node2;
+	Node* cur3 = newNode;
+	while (cur1 && cur2) {
+		if (cur1->val < cur2->val) {
+			cur3->next = cur1;
+			cur1 = cur1->next;
+		}
+		else {
+			cur3->next = cur2;
+			cur2 = cur2->next;
+		}
+		cur3 = cur3->next;
+	}
+	if (cur1) {
+		cur3->next = cur1;
+	}
+	else {
+		cur3->next = cur2;
+	}
+	return newNode->next;
+}
