@@ -1,0 +1,65 @@
+
+//合并有序数组
+void merge(int* nums1, int nums1Size, int m, int* nums2, int nums2Size, int n) {
+	int i = m - 1;
+	int j = n - 1;
+	int k = m + n - 1;
+	while (i >= 0 && j >= 0) {
+		if (nums1[i] > nums2[j]) {
+			nums1[k] = nums1[i];
+			k--;
+			i--;
+		}
+		else {
+			nums1[k] = nums2[j];
+			k--;
+			j--;
+		}
+	}
+	while (j >= 0) {
+		nums1[k] = nums2[j];
+		k--;
+		j--;
+	}
+}
+
+
+//反转数组加强版
+void reverse(int a[], int n,int start,int end) {
+	int temp = 0;
+	int j = end;
+	int mid = (start + end-1) / 2;
+	for (int i = start-1; i < mid; i++) {
+		temp = a[i];
+		a[i] = a[j - 1];
+		a[j - 1] = temp;
+		j--;
+	}
+}
+
+
+//摩尔投票
+int moer(int a[],int n) {
+	int can = -100;
+	int cat = 0;
+	for (int i = 0; i < n; i++) {
+		if (cat == 0) { 
+			can = a[i];
+			cat++;
+		}
+		else if (can == a[i]) cat++;
+		else cat--;
+	}
+	if (can < n / 2) return -1;
+	return can;
+}
+
+
+
+//循环左移n位
+void leftMove(int a[], int n,int k) {
+	reverse(a,n,1, k );
+	reverse(a,n,k+1, n );
+	reverse(a,n,1, n );
+}
+
