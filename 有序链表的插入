@@ -10,7 +10,7 @@ Node* init(int val) {
 	return node;
 }
 
-//有序链表插入
+//有序链表合并
 Node* merge(Node* node1, Node* node2) {
 	if (node1 == NULL) return node2;
 	if (node2 == NULL) return node1;
