@@ -1,0 +1,36 @@
+#include<iostream>
+using namespace std;
+const int MAXN = 10000;
+int w[MAXN];    // 重量 
+int v[MAXN];    // 价值 
+int f[MAXN][MAXN];  // f[i][j], j重量下前i个物品的最大价值 
+int res=0;
+int main() 
+{
+    int num, c;   
+    cin >> num >> c;
+    for (int i = 1; i <= num; ++i){
+           cin >> v[i] >>w[i];
+    } //索引从1开始
+    for (int i = 0; i <= c;i++){
+        f[0][i] = w[0] >= i ? w[0] : 0;
+    }
+    for(int i = 1; i <= num; i++) 
+    {//i：考虑0~i个物品
+        for(int j = 0; j<=c; j++)
+        {//j：背包容量
+            if(j<w[i]) {//容量放不下第i个物品，不用管
+                f[i][j] = f[i-1][j];
+            }
+            else{//能放下第i个物品，就要考虑放了他后的价值和不放他的价值哪个大
+                //f[i-1][j]:不放i
+                //f[i-1][j-w[i]]+v[i]：放i （j-w[i]:放下i后需要减去i的重量）
+                f[i][j] = max(f[i-1][j], f[i-1][j-w[i]]+v[i]);
+            }
+        } 
+    }
+        
+ 
+    cout<<f[num][c];
+    return 0;
+}
