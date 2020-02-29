@@ -1,0 +1,98 @@
+#include<iostream>
+using namespace std;
+//最小堆
+void printarr(int a[],int n){
+    for (int i = 0; i < n;i++){
+        cout << a[i] << " ";
+    }
+    cout << endl;
+}
+
+
+
+
+
+/*
+堆排总结：
+a[0]:存放堆中元素个数
+堆中的child左节点=i*2，右节点=i*2+1
+1:shift_up:在末尾插入一个新元素时，使堆保持最大（最小）堆的性质
+2:shift_down:返回堆中根节点的元素，并且把末尾元素放到根节点，之后使堆保持最大（最小）堆的性质
+*/
+
+/*
+原地排序：不使用额外空间
+如果要从小到大排序，只能使用最大堆，若要从大到小排序，只能使用最小堆
+*/
+void shift_up(int a[],int n){
+    a[0]++;
+    int i = a[0];
+    a[i] = n;
+    while(i>1 && a[i/2]>n){
+        swap(a[i / 2], a[i]);
+        i /= 2;
+    }
+
+}
+
+int shift_down(int a[]){
+    int res = a[1];
+    a[1] = a[a[0]];
+    a[0]--;
+    int i = 1;
+    while(i*2<=a[0]){
+        int j = i * 2;
+        if(j+1<=a[0] && a[j+1]<a[j]){
+            j++;
+        }
+        if(a[i]<=a[j]){
+            break;
+        }
+        swap(a[i], a[j]);
+        i = j;
+    }
+    return res;
+}
+
+void heapsort(int a[],int n){
+    int *aux = new int[n + 1];
+    aux[0] = 0;
+    for (int i = 0; i < n;i++){
+        shift_up(aux, a[i]);
+    }
+    for (int i = 0; i < n;i++){
+        a[i] = shift_down(aux);
+    }
+}
+
+void shift_down2(int a[],int i,int cnt){
+    while(i*2+1<cnt){
+        int j = i * 2+1;
+        if(j+1<cnt && a[j+1]>a[j]){
+            j++;
+        }
+        if(a[i]>=a[j]){
+            break;
+        }
+        swap(a[i], a[j]);
+        i = j;
+    }
+}
+void heapsprt2(int a[],int n){
+    for (int i = (n - 1) / 2; i >= 0;i--){
+        shift_down2(a, i, n);
+    }
+    for (int i = n - 1; i > 0;i--){
+        swap(a[0], a[i]);
+        shift_down2(a, 0, i);
+    }
+}
+int main(){
+    int a[5] = {3, 1, 2, 6, 5};
+    printarr(a, 5);
+    heapsprt2(a, 5);
+    printarr(a, 5);
+    
+
+    return 0;
+}
