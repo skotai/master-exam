@@ -1,0 +1,94 @@
+#include<stdio.h>
+#include<malloc.h>
+#include<stdbool.h>
+#include<queue>
+#include <algorithm>
+using namespace std;
+typedef struct node {
+	struct node* right;
+	struct node* left;
+	int val;
+}Node;
+
+
+
+Node* newNode(int val) {
+	Node* node = (Node*)malloc(sizeof(Node));
+	node->left = NULL;
+	node->right = NULL;
+	node->val = val;
+	return node;
+}
+
+
+
+Node* insert(Node* node, int val) {
+	if (node == NULL) {
+		return newNode(val);
+	}
+	else if (val < node->val)  node->left = insert(node->left, val);
+	else if (val > node->val)  node->right = insert(node->right, val);
+	return node;
+}
+
+void inorder(Node* node) {
+	if (node == NULL) return;
+	inorder(node->left);
+	printf("%d ", node->val);
+	inorder(node->right);
+}
+
+//广度优先
+void DFS(Node* node) {
+	queue<Node *> q;
+	q.push(node);
+	while (!q.empty()) {
+		int temp = q.front()->val;
+		printf("%d ", temp);
+		if (q.front()->left) q.push(q.front()->left);
+		if (q.front()->right) q.push(q.front()->right);
+		q.pop();
+	}
+}
+
+//计算树的高度
+int height(Node* node) {
+	if (node == NULL) return 0;
+	return 1 + max(height(node->left),height(node->right));
+}
+int height2(Node* node) {
+	int a, b;
+	if (node == NULL) return 0;
+	a = height2(node->left);
+	b = height2(node->right);
+	if (a >= b) {
+		return 1 + height2(node->left);
+	}
+	else {
+		return 1 + height2(node->right);
+	}
+}
+
+void print1(Node* node, int level) {
+	int i;
+	if (node == NULL) return;
+	for (int i = 0; i < level; i++) {
+		printf("*");
+	}
+	printf("value:%d\n", node->val);
+	print1(node->left, level + 1);
+	print1(node->right, level + 1);
+}
+int main() {
+	Node* node = newNode(40);
+	node = insert(node, 10);
+	node = insert(node, 70);
+	node = insert(node, 50);
+	node = insert(node, 85);
+	node = insert(node, 65);
+	int cnt = height2(node);
+	printf("%d\n", cnt);
+	//DFS(node);
+	printf("\n-----------------------\n");
+	print1(node, 1);
+}
